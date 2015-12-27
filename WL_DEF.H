@@ -689,6 +689,11 @@ enum	{
 	bt_readychaingun
 };
 
+#define NUMBUTTONSEX	2
+enum	{
+	btx_strafeleft,
+	btx_straferight
+};
 
 #define NUMWEAPONS	5
 typedef enum	{
@@ -894,18 +899,21 @@ extern	boolean		mouseenabled,joystickenabled,joypadenabled,joystickprogressive;
 extern	int			joystickport;
 extern	int			dirscan[4];
 extern	int			buttonscan[NUMBUTTONS];
+extern	int			buttonscanex[NUMBUTTONSEX];
 extern	int			buttonmouse[4];
 extern	int			buttonjoy[4];
 
 extern	boolean		buttonheld[NUMBUTTONS];
+extern	boolean		buttonheldex[NUMBUTTONSEX];
 
 extern	int			viewsize;
 
 //
 // curent user input
 //
-extern	int			controlx,controly;		// range from -100 to 100
+extern	int		controlx,controly,controlz;  // range from -100 to 100
 extern	boolean		buttonstate[NUMBUTTONS];
+extern	boolean		buttonstateex[NUMBUTTONSEX];
 
 extern	boolean		demorecord,demoplayback;
 extern	char		far *demoptr, far *lastdemoptr;

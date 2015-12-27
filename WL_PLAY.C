@@ -60,12 +60,14 @@ int			joystickport;
 int			dirscan[4] = {sc_UpArrow,sc_RightArrow,sc_DownArrow,sc_LeftArrow};
 int			buttonscan[NUMBUTTONS] =
 			{sc_Control,sc_Alt,sc_RShift,sc_Space,sc_1,sc_2,sc_3,sc_4};
+int			buttonscanex[NUMBUTTONSEX] = {sc_S,sc_D};
 int			buttonmouse[4]={bt_attack,bt_strafe,bt_use,bt_nobutton};
 int			buttonjoy[4]={bt_attack,bt_strafe,bt_use,bt_run};
 
 int			viewsize;
 
 boolean		buttonheld[NUMBUTTONS];
+boolean		buttonheldex[NUMBUTTONSEX];
 
 boolean		demorecord,demoplayback;
 char		far *demoptr, far *lastdemoptr;
@@ -74,8 +76,9 @@ memptr		demobuffer;
 //
 // curent user input
 //
-int			controlx,controly;		// range from -100 to 100 per tic
+int			controlx,controly,controlz;		// range from -100 to 100 per tic
 boolean		buttonstate[NUMBUTTONS];
+boolean		buttonstateex[NUMBUTTONSEX];
 
 
 
@@ -265,6 +268,10 @@ void PollKeyboardButtons (void)
 	for (i=0;i<NUMBUTTONS;i++)
 		if (Keyboard[buttonscan[i]])
 			buttonstate[i] = true;
+	for (i=0;i<NUMBUTTONSEX;i++)
+		if (Keyboard[buttonscanex[i]])
+			buttonstateex[i] = true;
+
 }
 
 
@@ -350,6 +357,10 @@ void PollKeyboardMove (void)
 			controlx -= RUNMOVE*tics;
 		if (Keyboard[dirscan[di_east]])
 			controlx += RUNMOVE*tics;
+		if (buttonstateex[btx_strafeleft])
+			controlz -= RUNMOVE*tics;
+		if (buttonstateex[btx_straferight])
+			controlz += RUNMOVE*tics;
 	}
 	else
 	{
@@ -361,6 +372,10 @@ void PollKeyboardMove (void)
 			controlx -= BASEMOVE*tics;
 		if (Keyboard[dirscan[di_east]])
 			controlx += BASEMOVE*tics;
+		if (buttonstateex[btx_strafeleft])
+			controlz -= BASEMOVE*tics;
+		if (buttonstateex[btx_straferight])
+			controlz += BASEMOVE*tics;
 	}
 }
 
@@ -484,8 +499,12 @@ void PollControls (void)
 
 	controlx = 0;
 	controly = 0;
+	controlz = 0;
 	memcpy (buttonheld,buttonstate,sizeof(buttonstate));
+	memcpy (buttonheldex,buttonstateex,sizeof(buttonstateex));
+
 	memset (buttonstate,0,sizeof(buttonstate));
+	memset (buttonstateex,0,sizeof(buttonstateex));
 
 	if (demoplayback)
 	{
@@ -548,6 +567,11 @@ void PollControls (void)
 		controly = max;
 	else if (controly < min)
 		controly = min;
+
+	if (controlz > max)
+		controlz = max;
+	else if (controlz < min)
+		controlz = min;
 
 	if (demorecord)
 	{

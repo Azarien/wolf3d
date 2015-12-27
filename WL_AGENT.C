@@ -16,6 +16,7 @@
 
 
 #define MOVESCALE		150l
+#define ZSTRAFESCALE	125l
 #define BACKMOVESCALE	100l
 #define ANGLESCALE		20
 
@@ -152,6 +153,7 @@ void ControlMovement (objtype *ob)
 	int		angle,maxxmove;
 	int		angleunits;
 	long	speed;
+	boolean	xstrafe,zstrafe;
 
 	thrustspeed = 0;
 
@@ -161,11 +163,37 @@ void ControlMovement (objtype *ob)
 //
 // side to side move
 //
-	if (buttonstate[bt_strafe])
+	xstrafe = buttonstate[bt_strafe];
+	zstrafe = !xstrafe &&
+		(buttonstateex[btx_strafeleft] ||
+		buttonstateex[btx_straferight]);
+
+	if (zstrafe)
 	{
 	//
-	// strafing
+	// z-strafing
 	//
+
+		if (controlz > 0)
+		{
+			angle = ob->angle - ANGLES/4;
+			if (angle < 0)
+				angle += ANGLES;
+			Thrust (angle,controlz*ZSTRAFESCALE);	// move to left
+		}
+		else if (controlz < 0)
+		{
+			angle = ob->angle + ANGLES/4;
+			if (angle >= ANGLES)
+				angle -= ANGLES;
+			Thrust (angle,-controlz*ZSTRAFESCALE);	// move to right
+		}
+	}
+
+	if (xstrafe)
+	{
+	//
+	// x-strafing
 	//
 		if (controlx > 0)
 		{
@@ -185,7 +213,7 @@ void ControlMovement (objtype *ob)
 	else
 	{
 	//
-	// not strafing
+	// no x-strafing
 	//
 		anglefrac += controlx;
 		angleunits = anglefrac/ANGLESCALE;
