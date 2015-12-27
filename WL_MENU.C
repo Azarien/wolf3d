@@ -348,7 +348,7 @@ void US_ControlPanel(byte scancode)
 	{
 		case sc_F1:
 			#ifdef SPEAR
-			BossKey();
+			//BossKey();
 			#else
 			#ifdef GOODTIMES
 			BossKey();

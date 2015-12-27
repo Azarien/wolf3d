@@ -1466,7 +1466,7 @@ void    DemoLoop (void)
 
 			#ifndef GOODTIMES
 			#ifndef SPEARDEMO
-			CopyProtection();
+			//CopyProtection();
 			#endif
 			#endif
 
