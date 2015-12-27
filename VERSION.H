@@ -1,10 +1,18 @@
-//#define SPEAR
-//#define JAPAN
-#define GOODTIMES
 #define ARTSEXTERN
 #define DEMOSEXTERN
-//#define MYPROFILE
-//#define DEBCHECK
 #define CARMACIZED
-//#define UPLOAD
-
+
+#ifdef DEMO
+#ifdef SPEAR
+#define SPEARDEMO
+#else
+#define UPLOAD
+#endif
+#endif
+
+#ifndef SPEAR
+#ifndef DEMO
+// comment out this to enable "read this"
+#define GOODTIMES
+#endif
+#endif
