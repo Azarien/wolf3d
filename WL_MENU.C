@@ -456,6 +456,15 @@ void US_ControlPanel(byte scancode)
 				MenuFadeIn();
 				break;
 
+			case -1:
+				// ESC key pressed
+				if (!ingame)
+				{
+					CP_Quit();
+					break;
+				}
+				// fallthrough
+
 			case backtodemo:
 				#ifdef SPEAR
 				if (!ingame)
@@ -487,7 +496,6 @@ void US_ControlPanel(byte scancode)
 				VL_FadeOut(0,255,0,0,0,10);
 				break;
 
-			case -1:
 			case quit:
 				CP_Quit();
 				break;
