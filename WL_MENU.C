@@ -347,14 +347,10 @@ void US_ControlPanel(byte scancode)
 	switch(scancode)
 	{
 		case sc_F1:
-			#ifdef SPEAR
-			//BossKey();
-			#else
-			#ifdef GOODTIMES
+			#if defined(SPEAR) || defined(GOODTIMES)
 			BossKey();
 			#else
 			HelpScreens();
-			#endif
 			#endif
 			goto finishup;
 
@@ -608,8 +604,7 @@ void DrawMainMenu(void)
 	VW_UpdateScreen();
 }
 
-#ifndef GOODTIMES
-#ifndef SPEAR
+#if !defined(GOODTIMES) && !defined(SPEAR)
 ////////////////////////////////////////////////////////////////////
 //
 // READ THIS!
@@ -622,11 +617,8 @@ void CP_ReadThis(void)
 	StartCPMusic(MENUSONG);
 }
 #endif
-#endif
 
-#ifndef SPEAR
-#ifndef GOODTIMES
-#else
+#if defined(GOODTIMES) || defined(SPEAR)
 ////////////////////////////////////////////////////////////////////
 //
 // BOSS KEY
@@ -648,7 +640,7 @@ void BossKey(void)
 	LoadLatchMem();
 }
 #endif
-#endif
+
 
 ////////////////////////////////////////////////////////////////////
 //
